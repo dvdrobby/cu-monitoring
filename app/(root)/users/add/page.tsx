@@ -1,5 +1,6 @@
 "use client"
 
+import axios from "axios"
 import { Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -30,10 +31,15 @@ export default function AddUserPage(){
       email: "",
       password: "",
       confirmPassword:"",
+      is_admin:false,
+      is_superuser:false
   }});
 
-  const handleSubmit = (values: z.infer<typeof registerSchema>) => {
-    console.log(values)
+  const handleSubmit = async (values: z.infer<typeof registerSchema>) => {
+
+    const data = JSON.stringify(values)
+    const res = await axios.post(`/api/users` , data )
+    console.log("AXIOS RESP", res)
   }
     return(
         <>
