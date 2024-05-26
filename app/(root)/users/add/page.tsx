@@ -20,7 +20,8 @@ import { useState } from "react"
 
 
 export default function AddUserPage() {
-  const [loading, setLoading] = useState()
+  const [loading, setLoading] = useState(false)
+  const role = "USER"
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -29,15 +30,25 @@ export default function AddUserPage() {
       name: "",
       email: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      role
     }
   });
 
   const handleSubmit = async (values: z.infer<typeof registerSchema>) => {
 
-    const data = JSON.stringify(values)
-    const res = await axios.post(`/api/users`, data)
-    console.log("AXIOS RESP", res)
+    try {
+      setLoading(true)
+      const res = await axios.post(`/api/users`, values)
+      console.log(res.data)
+    } catch (err) {
+      setLoading(true)
+      console.log("Submit Error: " + err)
+    } finally {
+      setLoading(false)
+    }
+
+
   }
   return (
     <>

@@ -13,7 +13,8 @@ export const registerSchema = z.object({
     password: z.string().min(6, {
         message: "Password must be at least 6 characters"
     }),
-    confirmPassword: z.string().min(6)
+    confirmPassword: z.string().min(6),
+    role: z.string()
 }).superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
       ctx.addIssue({
