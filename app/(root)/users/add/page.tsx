@@ -58,22 +58,23 @@ export default function AddUserPage() {
 
     const validatedValues = registerSchema.safeParse(values)
 
-    if (!validatedValues) {
+    if (validatedValues.success) {
+      try {
+        setLoading(true)
+        const res = await axios.post(`/api/users`, validatedValues.data)
+        console.log(res)
+        if (res.status == 200) setSuccess("User baru berhasil ditambahkan")
+      } catch (err) {
+        setLoading(true)
+        setError("Terjadi kesalahan")
+      } finally {
+        setLoading(false)
+      }
+    } else {
       setError("Input yang dikirimkan invalid")
       return console.error("Data invalid")
     }
-
-    try {
-      setLoading(true)
-      const res = await axios.post(`/api/users`, validatedValues)
-      console.log(res)
-      if (res.status == 200) setSuccess("User baru berhasil ditambahkan")
-    } catch (err) {
-      setLoading(true)
-      setError("Terjadi kesalahan")
-    } finally {
-      setLoading(false)
-    }
+    
   }
 
   return (

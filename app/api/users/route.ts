@@ -1,5 +1,6 @@
 "use server"
 
+import { isAdmin } from "@/utils/cek-user";
 import { prisma } from "@/utils/conn";
 import { NextResponse } from "next/server";
 
@@ -15,7 +16,7 @@ export async function POST(req: Request){
             role
         } =  body
 
-        console.log(role)
+        isAdmin(username)
         const admin = await prisma.user.findFirst({
             where:{
                 role
