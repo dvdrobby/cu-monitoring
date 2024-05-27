@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request){
     try{
         const body = await req.json()
+
         const {
             username,
             name,
@@ -21,7 +22,6 @@ export async function POST(req: Request){
             }
         })
 
-        console.log(admin)
         if(!admin){
             return new NextResponse("Unauthorized Action", {status:401})
         }

@@ -16,11 +16,16 @@ import {
   FormControl
 } from "@/components/ui/form"
 import { registerSchema } from "@/schema/register"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
+import { AlertError } from "@/components/alert-error"
+import { AlertSuccess } from "@/components/alert-success"
 
 
 export default function AddUserPage() {
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
   const role = "USER"
 
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -35,26 +40,49 @@ export default function AddUserPage() {
     }
   });
 
+  useEffect(() => {
+    if (form.formState.isSubmitSuccessful) {
+      form.reset({
+        username: "",
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      })
+    }
+  }, [form, success])
+
   const handleSubmit = async (values: z.infer<typeof registerSchema>) => {
+    setError("")
+    setSuccess("")
+
+    const validatedValues = registerSchema.safeParse(values)
+
+    if (!validatedValues) {
+      setError("Input yang dikirimkan invalid")
+      return console.error("Data invalid")
+    }
 
     try {
       setLoading(true)
-      const res = await axios.post(`/api/users`, values)
-      console.log(res.data)
+      const res = await axios.post(`/api/users`, validatedValues)
+      console.log(res)
+      if (res.status == 200) setSuccess("User baru berhasil ditambahkan")
     } catch (err) {
       setLoading(true)
-      console.log("Submit Error: " + err)
+      setError("Terjadi kesalahan")
     } finally {
       setLoading(false)
     }
-
-
   }
+
   return (
     <>
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Tambah User</h1>
       </div>
+      <AlertError message={error} />
+      <AlertSuccess message={success} />
       <div
         className="flex flex-1 items-start justify-start rounded-lg border border-dashed shadow-sm px-2 py-4"
       >
