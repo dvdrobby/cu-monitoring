@@ -7,5 +7,7 @@ export async function isAdmin(username:string){
         }
     })
 
-    return user
+    if(user?.username == "ADMIN") return true
+
+    return false
 }
