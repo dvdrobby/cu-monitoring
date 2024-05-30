@@ -14,7 +14,6 @@ import { auth, signOut } from "@/auth"
 export const UserProfile = async () => {
 
     const session = await auth()
-
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -24,7 +23,7 @@ export const UserProfile = async () => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Hallo {session?.user?.name}</DropdownMenuLabel>
+                <DropdownMenuLabel>Hallo {session?.user?.username}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem>Support</DropdownMenuItem>

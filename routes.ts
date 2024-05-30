@@ -14,6 +14,15 @@ export const publicRoutes = [
 ]
 
 /**
+ * An Array of routes that are accessible only for admin
+ * These route require authentication as admin
+ * @type {string[]}
+ */
+export const adminRoutes = [
+    "/auth/add"
+]
+
+/**
  * An Array of routes that used for authentication
  * These route will redirect user to /
  * @type {string[]}

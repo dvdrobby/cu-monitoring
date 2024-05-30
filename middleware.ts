@@ -7,16 +7,21 @@ import {
   DEFAULT_LOGIN_REDIRECT,
   publicRoutes,
   apiPrefix,
-  authRoutes
+  authRoutes,
+  adminRoutes
 } from "@/routes"
+import { isAdmin } from "./utils/cek-user"
 
 export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
+  console.log(req.auth?.user.email)
+  // const isAdmin = await isAdmin()
 
   const isApiRoute = nextUrl.pathname.startsWith(apiPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isAdminRoute = adminRoutes.includes(nextUrl.pathname);
   
   if(isApiRoute) {
     return null
@@ -29,6 +34,7 @@ export default auth((req) => {
 
     return null
   }
+
 
   if(!isLoggedIn && !isPublicRoute){
     return Response.redirect(new URL("/login", nextUrl))
