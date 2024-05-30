@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { cn } from "@/lib/utils"
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { SessionProvider } from "next-auth/react"
 
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -21,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <TooltipProvider>
-        <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable)}>{children}</body>
+        <SessionProvider>
+          <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable)}>{children}</body>
+        </SessionProvider>
       </TooltipProvider>
     </html>
   );

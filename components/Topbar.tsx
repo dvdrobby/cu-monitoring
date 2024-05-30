@@ -1,14 +1,6 @@
 import Link from "next/link";
 
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem
-} from "@/components/ui/dropdown-menu";
-import {
   Menu,
   Home,
   Users,
@@ -26,8 +18,12 @@ import {
   SheetTrigger
 } from "@/components/ui/sheet";
 import { UserProfile } from "./user-profile";
+import { auth } from "@/auth";
 
-export function Topbar() {
+export async function Topbar() {
+  const session = await auth()
+  const admin = session?.user.role == "ADMIN"
+
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <Sheet>
@@ -48,19 +44,21 @@ export function Topbar() {
               <span className="text-sm text-muted-foreground font-thin">Monitoring Apps v0.1</span>
             </Link>
             <Link
-              href="#"
+              href="/"
               className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
             >
               <Home className="h-5 w-5" />
               Dashboard
             </Link>
-            <Link
-              href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-            >
-              <Users className="h-5 w-5" />
-              Users
-            </Link>
+            {admin ?
+              <Link
+                href="/users/add"
+                className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+              >
+                <Users className="h-5 w-5" />
+                Users
+              </Link>
+              : ""}
             <Link
               href="#"
               className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
@@ -97,7 +95,7 @@ export function Topbar() {
         </form>
       </div>
       {/* End Search Bar */}
-
+      <div>Hallo, <span className="font-bold">{session?.user.name}</span></div>
       <UserProfile />
     </header>
   )

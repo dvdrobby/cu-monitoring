@@ -23,7 +23,7 @@ export const UserProfile = async () => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Hallo {session?.user?.username}</DropdownMenuLabel>
+                <DropdownMenuLabel>Hallo {session?.user?.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem>Support</DropdownMenuItem>

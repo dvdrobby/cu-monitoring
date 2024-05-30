@@ -1,16 +1,15 @@
+
 import { prisma } from "./conn";
 
-export async function isAdmin(username:string){
-    const user = await prisma.user.findFirst({
-        where: {
-            username
-        }
-    })
+// export async function isAdmin(){
+//     const session = await auth();
 
-    if(user?.role == "ADMIN") return true
+//     if(session?.user.role == "ADMIN"){
+//         return true
+//     }
 
-    return false
-}
+//     return false
+// }
 
 export async function getUser(username:string){
     const user = await prisma.user.findFirst({

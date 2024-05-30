@@ -19,7 +19,7 @@ export const publicRoutes = [
  * @type {string[]}
  */
 export const adminRoutes = [
-    "/auth/add"
+    "/users/add"
 ]
 
 /**

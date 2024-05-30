@@ -9,9 +9,11 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Topbar } from "@/components/Topbar"
 import React from "react"
+import { auth } from "@/auth"
 
-export default function Dashboard({ children }: { children: React.ReactNode }) {
-
+export default async function Dashboard({ children }: { children: React.ReactNode }) {
+  const session = await auth()
+  const admin = session?.user.role == "ADMIN"
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -27,19 +29,22 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Link
-                href="#"
+                href="/"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Home className="h-4 w-4" />
                 Dashboard
               </Link>
-              <Link
-                href="/users/add"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Users className="h-4 w-4" />
-                Users
-              </Link>
+              {admin ?
+                <Link
+                  href="/users/add"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                >
+                  <Users className="h-4 w-4" />
+                  Users
+                </Link>
+                : ""}
+
               <Link
                 href="#"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"

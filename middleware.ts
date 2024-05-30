@@ -10,13 +10,14 @@ import {
   authRoutes,
   adminRoutes
 } from "@/routes"
-import { isAdmin } from "./utils/cek-user"
+import { auth as getSession } from "@/auth"
 
-export default auth((req) => {
+export default auth(async (req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
-  console.log(req.auth?.user.email)
-  // const isAdmin = await isAdmin()
+  const session = await getSession();
+  const isAdmin = session?.user.role == "ADMIN";
+  console.log(isAdmin)
 
   const isApiRoute = nextUrl.pathname.startsWith(apiPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
@@ -35,12 +36,15 @@ export default auth((req) => {
     return null
   }
 
+  if(!isAdmin && isAdminRoute){
+    return Response.redirect(new URL("/", nextUrl))
+  }
 
   if(!isLoggedIn && !isPublicRoute){
     return Response.redirect(new URL("/login", nextUrl))
   }
 
-  return null
+
 })
 
 export const config = {
