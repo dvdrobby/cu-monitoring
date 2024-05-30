@@ -1,8 +1,11 @@
 "use server"
 
+import { auth } from "@/auth";
 import { isAdmin } from "@/utils/cek-user";
 import { prisma } from "@/utils/conn";
 import { NextResponse } from "next/server";
+
+import bcrypt from "bcryptjs"
 
 export async function POST(req: Request){
     try{
@@ -15,29 +18,19 @@ export async function POST(req: Request){
             password,
             role
         } =  body
+       
+        // const session = await auth()
+        const hashedPassword = bcrypt.hashSync(password, 10)
 
-        isAdmin(username)
-        const admin = await prisma.user.findFirst({
-            where:{
-                role
+        const user = await prisma.user.create({
+            data: {
+                username,
+                email,
+                name,
+                password: hashedPassword
             }
         })
-
-        if(!admin){
-            return new NextResponse("Unauthorized Action", {status:401})
-        }
-
-        
-
-        // const user = await prisma.user.create({
-        //     data: {
-        //         username,
-        //         email,
-        //         name,
-        //         password
-        //     }
-        // })
-        return NextResponse.json(admin)
+        return NextResponse.json(user)
     }catch(error){
         console.log("REGISTER_POST", error)
         return new NextResponse("Internal Server Error", {status: 500})
