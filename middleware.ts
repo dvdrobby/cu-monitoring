@@ -17,7 +17,6 @@ export default auth(async (req) => {
   const isLoggedIn = !!req.auth;
   const session = await getSession();
   const isAdmin = session?.user.role == "ADMIN";
-  console.log(isAdmin)
 
   const isApiRoute = nextUrl.pathname.startsWith(apiPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);

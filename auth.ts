@@ -13,7 +13,7 @@ export const {
   adapter: PrismaAdapter(prisma),
   session: { strategy: 'jwt'},
   callbacks:{
-    async jwt({ token, user, session }){
+    async jwt({ token, user }){
       if(user){
         return {
           ...token, 
@@ -24,7 +24,7 @@ export const {
       }
       return token
     },
-    async session({ session, token, user}){
+    async session({ session, token}){
         return {
           ...session,
           user:{

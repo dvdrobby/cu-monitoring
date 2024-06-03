@@ -52,7 +52,7 @@ export async function Topbar() {
             </Link>
             {admin ?
               <Link
-                href="/users/add"
+                href="/users"
                 className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
               >
                 <Users className="h-5 w-5" />

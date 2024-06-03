@@ -19,7 +19,6 @@ import { Loader2 } from "lucide-react"
 import { useEffect, useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { AuthError } from "next-auth"
 import { useRouter } from "next/navigation"
 import { authorize } from "@/actions/authorize"
 
@@ -27,7 +26,6 @@ export default function LoginPage() {
 
     const [error, setError] = useState("")
     const [isPending, startTransition] = useTransition()
-    const router = useRouter()
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
