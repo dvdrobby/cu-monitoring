@@ -5,6 +5,7 @@ import {
     TabsTrigger,
     TabsContent
 } from "@/components/ui/tabs"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { EditedUser, UserTable } from "@/components/user-table"
 import { getAllUsers } from "@/utils/cek-user"
@@ -33,9 +34,7 @@ export default function Page() {
         return setFeedback(props)
     }
 
-
-    const handleUpdateRole = async () => {
-
+    const isChange = () => {
         const arr: EditedUser[] = []
         feedback.length > 0 && feedback.map(item => {
             const data = user.find(obj => obj.id === parseInt(item.id))
@@ -44,6 +43,13 @@ export default function Page() {
             const obj = { id: item.id, value: item.value }
             arr.push(obj)
         })
+
+        return arr
+    }
+
+    const handleUpdateRole = () => {
+
+        const arr = isChange()
 
         setValue(arr)
 
@@ -84,16 +90,21 @@ export default function Page() {
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
             <Tabs defaultValue="all">
                 <div className="flex items-center">
-                    <TabsList>
-                        <TabsTrigger value="all">Users</TabsTrigger>
-                    </TabsList>
 
                     <div className="ml-auto flex items-center gap-2" >
-                        <Button disabled={loading} size="sm" className="h-8" onClick={handleUpdateRole}>
-                            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                Save
-                            </span>
-                        </Button>
+                        {
+                            isChange().length > 0 ?
+                                <Button disabled={loading} size="sm" className="h-8" onClick={handleUpdateRole}>
+                                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                        Save
+                                    </span>
+                                </Button> :
+                                <Button size="sm" className="h-8">
+                                    <Link href="/users" className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                        Back
+                                    </Link>
+                                </Button>
+                        }
                     </div>
                 </div>
                 <TabsContent value="all">

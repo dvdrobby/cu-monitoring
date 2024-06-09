@@ -36,6 +36,9 @@ import { AlertSuccess } from "./alert-success"
 import { AlertError } from "./alert-error"
 import { useRouter } from "next/navigation"
 import { User } from "@prisma/client"
+import Link from "next/link"
+import { Modal } from "./modal"
+import axios from "axios"
 
 export type EditedUser = {
     id: string,
@@ -61,14 +64,19 @@ export function UserTable({
 }: UserTableProps) {
 
     const [user, setUser] = useState<EditedUser[]>([])
+    const [modalOpen, setModalOpen] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
+    const [msg, setMsg] = useState("")
     const router = useRouter()
 
     const handleChange = (e: any) => {
-        const id = e.slice(0, 1)
-        const value = e.slice(1, e.length)
+        const word = e.split(" ")
+        const id = word[0]
+        const value = word[1]
         const data = {
             id, value
         }
+
         const newUser = user.length > 0 && [...user]
 
         const isDuplicate = user?.findIndex(user => user.id === id)
@@ -85,6 +93,25 @@ export function UserTable({
         router.refresh()
     }
 
+    const onDelete = async (id: any) => {
+        try {
+            setLoading(true)
+            const res = await axios.delete(`/api/users/${id}`)
+            if (res) {
+                router.refresh()
+                setMsg("Data berhasil dihapus")
+                setTimeout(() => {
+                    setMsg("")
+                }, 2000)
+            }
+
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     useEffect(() => {
         value && value(user)
     }, [user, value])
@@ -96,7 +123,7 @@ export function UserTable({
                 <CardDescription>
                     Menampilkan daftar user yang terdaftar, kontrol role suatu user dan juga penghapusan data user.
                 </CardDescription>
-                <AlertSuccess message={success} />
+                {success ? <AlertSuccess message={success} /> : <AlertSuccess message={msg} />}
                 <AlertError message={error} />
             </CardHeader>
             <CardContent>
@@ -105,9 +132,10 @@ export function UserTable({
                         <TableRow>
                             <TableHead>Nama</TableHead>
                             <TableHead>Role</TableHead>
-                            <TableHead>
+                            {!edit && <TableHead>
                                 <span className="sr-only">Actions</span>
-                            </TableHead>
+                            </TableHead>}
+
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -118,15 +146,15 @@ export function UserTable({
                                     <TableCell className="font-medium">{user.name}</TableCell>
                                     <TableCell>
                                         {edit ?
-                                            <Select onValueChange={handleChange} defaultValue={user.id + user.role}>
+                                            <Select onValueChange={handleChange} defaultValue={user.id + " " + user.role}>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder={user.role} />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value={user.id + "ADMIN"}>ADMIN</SelectItem>
-                                                    <SelectItem value={user.id + "SUPERUSER"}>SUPERUSER</SelectItem>
-                                                    <SelectItem value={user.id + "OPERATOR"}>OPERATOR</SelectItem>
-                                                    <SelectItem value={user.id + "USER"}>USER</SelectItem>
+                                                    <SelectItem value={user.id + " ADMIN"}>ADMIN</SelectItem>
+                                                    <SelectItem value={user.id + " SUPERUSER"}>SUPERUSER</SelectItem>
+                                                    <SelectItem value={user.id + " OPERATOR"}>OPERATOR</SelectItem>
+                                                    <SelectItem value={user.id + " USER"}>USER</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                             :
@@ -135,25 +163,38 @@ export function UserTable({
                                         }
 
                                     </TableCell>
-                                    <TableCell>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button
-                                                    aria-haspopup="true"
-                                                    size="icon"
-                                                    variant="ghost"
-                                                >
-                                                    <MoreHorizontal className="h-4 w-4" />
-                                                    <span className="sr-only">Toggle menu</span>
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
-                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                <DropdownMenuItem>Edit</DropdownMenuItem>
-                                                <DropdownMenuItem>Delete</DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </TableCell>
+                                    {!edit &&
+
+                                        <TableCell>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button
+                                                        aria-haspopup="true"
+                                                        size="icon"
+                                                        variant="ghost"
+                                                    >
+                                                        <MoreHorizontal className="h-4 w-4" />
+                                                        <span className="sr-only">Toggle menu</span>
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    <DropdownMenuLabel><Link href="">Edit</Link></DropdownMenuLabel>
+                                                    <DropdownMenuLabel>
+                                                        <div className="cursor-pointer" onClick={() => setModalOpen(true)}>Delete</div>
+                                                        <Modal
+                                                            title="Data yang sudah dihapus tidak dapat dikembalikan."
+                                                            description="Apakah kamu yakin?"
+                                                            button="Hapus"
+                                                            isOpen={modalOpen}
+                                                            isLoading={loading}
+                                                            onClose={() => setModalOpen(false)}
+                                                            action={() => onDelete(user.id)}
+                                                        />
+                                                    </DropdownMenuLabel>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </TableCell>
+                                    }
                                 </TableRow>
                             ))
                         }

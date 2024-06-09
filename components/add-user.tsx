@@ -1,6 +1,7 @@
 "use client"
 
 import axios from "axios"
+import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -33,7 +34,8 @@ export default function AddUser() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
-    const role = "USER"
+    // const role = "USER"
+    const router = useRouter()
 
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
@@ -43,7 +45,7 @@ export default function AddUser() {
             email: "",
             password: "",
             confirmPassword: "",
-            role
+            // role
         }
     });
 
@@ -72,6 +74,7 @@ export default function AddUser() {
                 const res = await axios.post(`/api/users`, validatedValues.data)
                 console.log(res)
                 if (res.status == 200) setSuccess("User baru berhasil ditambahkan")
+                router.refresh()
             } catch (err) {
                 setLoading(true)
                 setError("Terjadi kesalahan")
