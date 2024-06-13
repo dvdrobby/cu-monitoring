@@ -19,7 +19,8 @@ export const publicRoutes = [
  * @type {string[]}
  */
 export const adminRoutes = [
-    "/users"
+    "/users",
+    "/users/role"
 ]
 
 /**

@@ -1,3 +1,4 @@
+import Link from "next/link"
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -25,8 +26,7 @@ export const UserProfile = async () => {
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Hallo {session?.user?.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
+                <DropdownMenuItem><Link href={`edit/${session?.user?.id}`}>Settings</Link></DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                     <form action={async () => {
