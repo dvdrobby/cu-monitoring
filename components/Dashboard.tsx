@@ -10,10 +10,14 @@ import { Badge } from "@/components/ui/badge"
 import { Topbar } from "@/components/Topbar"
 import React from "react"
 import { auth } from "@/auth"
+import { getUserById } from "@/utils/cek-user"
 
 export default async function Dashboard({ children }: { children: React.ReactNode }) {
   const session = await auth()
-  const admin = session?.user.role == "ADMIN"
+
+  const user = await getUserById(session?.user.id)
+  const admin = user?.role == "ADMIN"
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -60,7 +64,7 @@ export default async function Dashboard({ children }: { children: React.ReactNod
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <LineChart className="h-4 w-4" />
-                Analytics
+                Grafik
               </Link>
             </nav>
           </div>
@@ -70,7 +74,7 @@ export default async function Dashboard({ children }: { children: React.ReactNod
 
       {/* Mobile */}
       <div className="flex flex-col">
-        <Topbar />
+        <Topbar data={user} />
 
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
           {children}

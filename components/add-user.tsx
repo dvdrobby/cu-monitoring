@@ -21,13 +21,7 @@ import { useEffect, useState } from "react"
 
 import { AlertError } from "@/components/alert-error"
 import { AlertSuccess } from "@/components/alert-success"
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-    CardContent
-} from "@/components/ui/card"
+import { CustomCard } from "./custom-card"
 
 
 export default function AddUser() {
@@ -88,105 +82,104 @@ export default function AddUser() {
 
     }
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Tambah User</CardTitle>
-                <CardDescription>Menambahkan user baru untuk akses ke CU Monitoring</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <AlertError message={error} />
-                <AlertSuccess message={success} />
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-                        <FormField
-                            control={form.control}
-                            disabled={loading}
-                            name="username"
-                            render={({ field }) => (
-                                <div className="space-y-4 w-[400px]">
-                                    <FormItem>
-                                        <FormLabel className="font-semibold">Username</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} placeholder="Example:johndoe..." />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                </div>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            disabled={loading}
-                            name="name"
-                            render={({ field }) => (
-                                <div className="space-y-4 w-[400px]">
-                                    <FormItem>
-                                        <FormLabel className="font-semibold">Nama</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} placeholder="Example: John Doe..." />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                </div>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            disabled={loading}
-                            name="email"
-                            render={({ field }) => (
-                                <div className="space-y-4 w-[400px]">
-                                    <FormItem>
-                                        <FormLabel className="font-semibold">Email</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} type="email" placeholder="Example: johndoe@example.com..." />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                </div>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            disabled={loading}
-                            name="password"
-                            render={({ field }) => (
-                                <div className="space-y-4 w-[400px]">
-                                    <FormItem>
-                                        <FormLabel className="font-semibold">Password</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} type="password" placeholder="Password..." />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                </div>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            disabled={loading}
-                            name="confirmPassword"
-                            render={({ field }) => (
-                                <div className="space-y-4 w-[400px]">
-                                    <FormItem>
-                                        <FormLabel className="font-semibold">Confirm Password</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} type="password" placeholder="Password..." />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                </div>
-                            )}
-                        />
-                        <Button
-                            type="submit"
-                            disabled={loading}
-                        >
-                            {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : ""}
-                            Submit</Button>
-                    </form>
-                </Form>
-            </CardContent>
-        </Card >
+        <CustomCard
+            title="Tambah User"
+            description="Menambahkan user baru untuk akses ke CU Monitoring."
+            footer={false}
+        >
+            <AlertError message={error} />
+            <AlertSuccess message={success} />
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+                    <FormField
+                        control={form.control}
+                        disabled={loading}
+                        name="username"
+                        render={({ field }) => (
+                            <div className="space-y-4 w-[400px]">
+                                <FormItem>
+                                    <FormLabel className="font-semibold">Username</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} placeholder="Example:johndoe..." />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </div>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        disabled={loading}
+                        name="name"
+                        render={({ field }) => (
+                            <div className="space-y-4 w-[400px]">
+                                <FormItem>
+                                    <FormLabel className="font-semibold">Nama</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} placeholder="Example: John Doe..." />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </div>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        disabled={loading}
+                        name="email"
+                        render={({ field }) => (
+                            <div className="space-y-4 w-[400px]">
+                                <FormItem>
+                                    <FormLabel className="font-semibold">Email</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} type="email" placeholder="Example: johndoe@example.com..." />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </div>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        disabled={loading}
+                        name="password"
+                        render={({ field }) => (
+                            <div className="space-y-4 w-[400px]">
+                                <FormItem>
+                                    <FormLabel className="font-semibold">Password</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} type="password" placeholder="Password..." />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </div>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        disabled={loading}
+                        name="confirmPassword"
+                        render={({ field }) => (
+                            <div className="space-y-4 w-[400px]">
+                                <FormItem>
+                                    <FormLabel className="font-semibold">Confirm Password</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} type="password" placeholder="Password..." />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </div>
+                        )}
+                    />
+                    <Button
+                        type="submit"
+                        disabled={loading}
+                    >
+                        {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : ""}
+                        Submit</Button>
+                </form>
+            </Form>
+        </CustomCard>
+
     )
 }

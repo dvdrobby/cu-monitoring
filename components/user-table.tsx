@@ -1,5 +1,5 @@
 "use client"
-import { Suspense, useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import {
     Card,
     CardContent,
@@ -39,6 +39,7 @@ import { User } from "@prisma/client"
 import Link from "next/link"
 import { Modal } from "./modal"
 import axios from "axios"
+import { CustomCard } from "./custom-card"
 
 export type EditedUser = {
     id: string,
@@ -117,96 +118,86 @@ export function UserTable({
     }, [user, value])
 
     return (
-        <Card x-chunk="dashboard-06-chunk-0">
-            <CardHeader>
-                <CardTitle>Users</CardTitle>
-                <CardDescription>
-                    Menampilkan daftar user yang terdaftar, kontrol role suatu user dan juga penghapusan data user.
-                </CardDescription>
-                {success ? <AlertSuccess message={success} /> : <AlertSuccess message={msg} />}
-                <AlertError message={error} />
-            </CardHeader>
-            <CardContent>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Nama</TableHead>
-                            <TableHead>Role</TableHead>
-                            {!edit && <TableHead>
-                                <span className="sr-only">Actions</span>
-                            </TableHead>}
+        <CustomCard
+            title="Users"
+            description="Menampilkan daftar user yang terdaftar, kontrol role suatu user dan juga penghapusan data user."
+            footer={false}
+            footerDesc="showing 3of10"
+        >
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Nama</TableHead>
+                        <TableHead>Role</TableHead>
+                        {!edit && <TableHead>
+                            <span className="sr-only">Actions</span>
+                        </TableHead>}
 
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
 
-                        {data.length > 0 &&
-                            data.map((user) => (
-                                <TableRow key={user.id}>
-                                    <TableCell className="font-medium">{user.name}</TableCell>
-                                    <TableCell>
-                                        {edit ?
-                                            <Select onValueChange={handleChange} defaultValue={user.id + " " + user.role}>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder={user.role} />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value={user.id + " ADMIN"}>ADMIN</SelectItem>
-                                                    <SelectItem value={user.id + " SUPERUSER"}>SUPERUSER</SelectItem>
-                                                    <SelectItem value={user.id + " OPERATOR"}>OPERATOR</SelectItem>
-                                                    <SelectItem value={user.id + " USER"}>USER</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            :
+                    {data.length > 0 &&
+                        data.map((user) => (
+                            <TableRow key={user.id}>
+                                <TableCell className="font-medium">{user.name}</TableCell>
+                                <TableCell>
+                                    {edit ?
+                                        <Select onValueChange={handleChange} defaultValue={user.id + " " + user.role}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder={user.role} />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value={user.id + " ADMIN"}>ADMIN</SelectItem>
+                                                <SelectItem value={user.id + " SUPERUSER"}>SUPERUSER</SelectItem>
+                                                <SelectItem value={user.id + " OPERATOR"}>OPERATOR</SelectItem>
+                                                <SelectItem value={user.id + " USER"}>USER</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        :
 
-                                            user.role
-                                        }
-
-                                    </TableCell>
-                                    {!edit &&
-
-                                        <TableCell>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button
-                                                        aria-haspopup="true"
-                                                        size="icon"
-                                                        variant="ghost"
-                                                    >
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                        <span className="sr-only">Toggle menu</span>
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuLabel><Link href="">Edit</Link></DropdownMenuLabel>
-                                                    <DropdownMenuLabel>
-                                                        <div className="cursor-pointer" onClick={() => setModalOpen(true)}>Delete</div>
-                                                        <Modal
-                                                            title="Data yang sudah dihapus tidak dapat dikembalikan."
-                                                            description="Apakah kamu yakin?"
-                                                            button="Hapus"
-                                                            isOpen={modalOpen}
-                                                            isLoading={loading}
-                                                            onClose={() => setModalOpen(false)}
-                                                            action={() => onDelete(user.id)}
-                                                        />
-                                                    </DropdownMenuLabel>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
+                                        user.role
                                     }
-                                </TableRow>
-                            ))
-                        }
-                    </TableBody>
-                </Table>
-            </CardContent>
-            <CardFooter>
-                <div className="text-xs text-muted-foreground">
-                    Showing <strong>1-10</strong> of <strong>32</strong>{" "}
-                    products
-                </div>
-            </CardFooter>
-        </Card>
+
+                                </TableCell>
+                                {!edit &&
+
+                                    <TableCell>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    aria-haspopup="true"
+                                                    size="icon"
+                                                    variant="ghost"
+                                                >
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                    <span className="sr-only">Toggle menu</span>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuLabel><Link href={`/edit/${user.id}`}>Edit</Link></DropdownMenuLabel>
+                                                <DropdownMenuLabel>
+                                                    <div className="cursor-pointer" onClick={() => setModalOpen(true)}>Delete</div>
+                                                    <Modal
+                                                        title="Data yang sudah dihapus tidak dapat dikembalikan."
+                                                        description="Apakah kamu yakin?"
+                                                        button="Hapus"
+                                                        isOpen={modalOpen}
+                                                        isLoading={loading}
+                                                        onClose={() => setModalOpen(false)}
+                                                        action={() => onDelete(user.id)}
+                                                    />
+                                                </DropdownMenuLabel>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                }
+                            </TableRow>
+                        ))
+                    }
+                </TableBody>
+            </Table>
+        </CustomCard >
+
     )
 }

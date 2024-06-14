@@ -1,6 +1,5 @@
 "use client"
 
-import { signIn } from "@/auth"
 import { AlertError } from "@/components/alert-error"
 import { Button } from "@/components/ui/button"
 import {
@@ -26,6 +25,7 @@ export default function LoginPage() {
 
     const [error, setError] = useState("")
     const [isPending, startTransition] = useTransition()
+    const router = useRouter()
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -45,7 +45,6 @@ export default function LoginPage() {
     }
 
     useEffect(() => {
-
     }, [error])
 
     return (

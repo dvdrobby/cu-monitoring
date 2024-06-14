@@ -11,10 +11,10 @@ import { CircleUser } from "lucide-react"
 import { Button } from "./ui/button"
 
 import { auth, signOut } from "@/auth"
+import { User } from "@prisma/client"
 
-export const UserProfile = async () => {
+export const UserProfile = async ({ data }: { data: User | null }) => {
 
-    const session = await auth()
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -24,9 +24,9 @@ export const UserProfile = async () => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Hallo {session?.user?.name}</DropdownMenuLabel>
+                <DropdownMenuLabel>Hallo {data?.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem><Link href={`edit/${session?.user?.id}`}>Settings</Link></DropdownMenuItem>
+                <DropdownMenuItem><Link href={`/edit/${data?.id}`}>Settings</Link></DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                     <form action={async () => {

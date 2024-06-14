@@ -18,11 +18,10 @@ import {
   SheetTrigger
 } from "@/components/ui/sheet";
 import { UserProfile } from "./user-profile";
-import { auth } from "@/auth";
+import { User } from "@prisma/client";
 
-export async function Topbar() {
-  const session = await auth()
-  const admin = session?.user.role == "ADMIN"
+export async function Topbar({ data }: { data: User | null }) {
+  const admin = data?.role == "ADMIN"
 
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
@@ -95,8 +94,8 @@ export async function Topbar() {
         </form>
       </div>
       {/* End Search Bar */}
-      <div>Hallo, <span className="font-bold">{session?.user.name}</span></div>
-      <UserProfile />
+      <div>Hallo, <span className="font-bold">{data?.name}</span></div>
+      <UserProfile data={data} />
     </header>
   )
 }

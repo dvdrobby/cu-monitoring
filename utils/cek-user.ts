@@ -2,17 +2,15 @@
 
 import { prisma } from "./conn";
 
-export async function isAuth(sessionId:string){
+export async function getUserById(sessionId: any){
 
     const user = await prisma.user.findFirst({
         where:{
-            id:parseInt(sessionId)
+            id: parseInt(sessionId)
         }
     })
-
-    if(user) return true
     
-    return false
+    return user
 }
 
 export async function getUser(username:string){
