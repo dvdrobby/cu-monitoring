@@ -1,14 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
 import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardDescription,
-    CardTitle,
-    CardFooter
-} from "@/components/ui/card"
-import {
     Table,
     TableHeader,
     TableRow,
@@ -27,13 +19,10 @@ import {
     DropdownMenu,
     DropdownMenuTrigger,
     DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuItem
+    DropdownMenuLabel
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
-import { AlertSuccess } from "./alert-success"
-import { AlertError } from "./alert-error"
 import { useRouter } from "next/navigation"
 import { User } from "@prisma/client"
 import Link from "next/link"
@@ -129,10 +118,8 @@ export function UserTable({
                     <TableRow>
                         <TableHead>Nama</TableHead>
                         <TableHead>Role</TableHead>
-                        {!edit && <TableHead>
-                            <span className="sr-only">Actions</span>
+                        {!edit && <TableHead>Actions
                         </TableHead>}
-
                     </TableRow>
                 </TableHeader>
                 <TableBody>

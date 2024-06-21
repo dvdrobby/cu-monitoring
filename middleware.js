@@ -8,7 +8,8 @@ import {
   publicRoutes,
   apiPrefix,
   authRoutes,
-  adminRoutes
+  adminRoutes,
+  superuserRoutes
 } from "@/routes"
 import { auth as getSession } from "@/auth"
 
@@ -17,11 +18,13 @@ export default auth(async (req) => {
   const isLoggedIn = !!req.auth;
   const session = await getSession();
   const isAdmin = session?.user.role == "ADMIN";
+  const isSuperuser = session?.user.role == "SUPERUSER" | session?.user.role == "ADMIN";
 
   const isApiRoute = nextUrl.pathname.startsWith(apiPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isAdminRoute = adminRoutes.includes(nextUrl.pathname);
+  const isSuperuserRoute = superuserRoutes.includes(nextUrl.pathname);
   
   if(isApiRoute) {
     return null
@@ -36,6 +39,10 @@ export default auth(async (req) => {
   }
 
   if(!isAdmin && isAdminRoute){
+    return Response.redirect(new URL("/", nextUrl))
+  }
+
+  if(!isSuperuser && isSuperuserRoute){
     return Response.redirect(new URL("/", nextUrl))
   }
 

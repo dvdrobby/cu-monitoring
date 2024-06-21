@@ -79,8 +79,8 @@ export default function AddUser() {
             setError("Input yang dikirimkan invalid")
             return console.error("Data invalid")
         }
-
     }
+
     return (
         <CustomCard
             title="Tambah User"
@@ -96,7 +96,7 @@ export default function AddUser() {
                         disabled={loading}
                         name="username"
                         render={({ field }) => (
-                            <div className="space-y-4 w-[400px]">
+                            <div className="space-y-4 lg:w-[400px]">
                                 <FormItem>
                                     <FormLabel className="font-semibold">Username</FormLabel>
                                     <FormControl>
@@ -112,7 +112,7 @@ export default function AddUser() {
                         disabled={loading}
                         name="name"
                         render={({ field }) => (
-                            <div className="space-y-4 w-[400px]">
+                            <div className="space-y-4 lg:w-[400px]">
                                 <FormItem>
                                     <FormLabel className="font-semibold">Nama</FormLabel>
                                     <FormControl>
@@ -128,7 +128,7 @@ export default function AddUser() {
                         disabled={loading}
                         name="email"
                         render={({ field }) => (
-                            <div className="space-y-4 w-[400px]">
+                            <div className="space-y-4 lg:w-[400px]">
                                 <FormItem>
                                     <FormLabel className="font-semibold">Email</FormLabel>
                                     <FormControl>
@@ -144,7 +144,7 @@ export default function AddUser() {
                         disabled={loading}
                         name="password"
                         render={({ field }) => (
-                            <div className="space-y-4 w-[400px]">
+                            <div className="space-y-4 lg:w-[400px]">
                                 <FormItem>
                                     <FormLabel className="font-semibold">Password</FormLabel>
                                     <FormControl>
@@ -160,7 +160,7 @@ export default function AddUser() {
                         disabled={loading}
                         name="confirmPassword"
                         render={({ field }) => (
-                            <div className="space-y-4 w-[400px]">
+                            <div className="space-y-4 lg:w-[400px]">
                                 <FormItem>
                                     <FormLabel className="font-semibold">Confirm Password</FormLabel>
                                     <FormControl>

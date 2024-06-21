@@ -11,9 +11,9 @@ import { CircleUser } from "lucide-react"
 import { Button } from "./ui/button"
 
 import { auth, signOut } from "@/auth"
-import { User } from "@prisma/client"
+import { SessionUser } from "./Topbar"
 
-export const UserProfile = async ({ data }: { data: User | null }) => {
+export const UserProfile = async ({ data }: { data: SessionUser | undefined }) => {
 
     return (
         <DropdownMenu>

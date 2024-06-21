@@ -7,7 +7,7 @@ import {
   BookText,
   LineChart,
   Search,
-  CircleUser
+  Settings2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,10 +18,18 @@ import {
   SheetTrigger
 } from "@/components/ui/sheet";
 import { UserProfile } from "./user-profile";
-import { User } from "@prisma/client";
 
-export async function Topbar({ data }: { data: User | null }) {
+export type SessionUser = {
+  id: number
+  name: string
+  username: string
+  role: string
+  email: string
+  accessToken: string
+}
+export async function Topbar({ data }: { data: SessionUser | undefined }) {
   const admin = data?.role == "ADMIN"
+  const superuser = data?.role == "SUPERUSER" || data?.role == "ADMIN"
 
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
@@ -58,6 +66,14 @@ export async function Topbar({ data }: { data: User | null }) {
                 Users
               </Link>
               : ""}
+            {superuser &&
+              <Link
+                href="/preferences"
+                className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+              >
+                <Settings2 className="h-5 w-5" />
+                Preferences
+              </Link>}
             <Link
               href="#"
               className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"

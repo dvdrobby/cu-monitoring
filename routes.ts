@@ -24,6 +24,15 @@ export const adminRoutes = [
 ]
 
 /**
+ * An Array of routes that are accessible only for admin or superuser
+ * These route require authentication as admin
+ * @type {string[]}
+ */
+export const superuserRoutes = [
+    "/preferences"
+]
+
+/**
  * An Array of routes that used for authentication
  * These route will redirect user to /
  * @type {string[]}

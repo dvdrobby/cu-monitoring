@@ -3,6 +3,7 @@ import {
   BookText,
   Home,
   LineChart,
+  Settings2,
   Users,
 } from "lucide-react"
 
@@ -15,8 +16,10 @@ import { getUserById } from "@/utils/cek-user"
 export default async function Dashboard({ children }: { children: React.ReactNode }) {
   const session = await auth()
 
-  const user = await getUserById(session?.user.id)
-  const admin = user?.role == "ADMIN"
+  // const user = await getUserById(session?.user.id)
+  const user = session?.user
+  const admin = session?.user.role == "ADMIN"
+  const superuser = session?.user.role == "SUPERUSER" || session?.user.role == "ADMIN"
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -39,7 +42,7 @@ export default async function Dashboard({ children }: { children: React.ReactNod
                 <Home className="h-4 w-4" />
                 Dashboard
               </Link>
-              {admin ?
+              {admin &&
                 <Link
                   href="/users"
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
@@ -47,8 +50,16 @@ export default async function Dashboard({ children }: { children: React.ReactNod
                   <Users className="h-4 w-4" />
                   Users
                 </Link>
-                : ""}
+              }
 
+              {superuser &&
+                <Link
+                  href="/preferences"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                >
+                  <Settings2 className="h-4 w-4" />
+                  Preferences
+                </Link>}
               <Link
                 href="#"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
