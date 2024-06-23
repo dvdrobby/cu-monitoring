@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default async function Page() {
 
     return (
-        <Tabs defaultValue="custom-field">
+        <Tabs defaultValue="add-logsheet">
             <div className="flex items-center">
                 <TabsList>
                     <TabsTrigger value="logsheet">Daftar Logsheet</TabsTrigger>

@@ -34,3 +34,11 @@ model CustomField {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
+
+model Logsheet {
+  id Int @id @default(autoincrement())
+  name String @unique
+  kolom Json
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}

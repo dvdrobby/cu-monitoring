@@ -18,12 +18,16 @@ import { CustomField } from "@prisma/client"
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "./ui/select"
 
 import { Modal } from "./modal"
+import { AlertSuccess } from "./alert-success"
+import { AlertError } from "./alert-error"
 
 export const CustomOptionField = () => {
 
     const [options, setOptions] = useState<String[]>([])
     const [fields, setFields] = useState<CustomField[]>([])
     const [modalOpen, setModalOpen] = useState<boolean>(false)
+    const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
 
     const [loading, setLoading] = useState(false)
     const router = useRouter()
@@ -57,15 +61,19 @@ export const CustomOptionField = () => {
             desc,
             options
         }
+        setSuccess("")
+        setError("")
 
         try {
             setLoading(true)
             const res = await axios.post("/api/custom-field", data)
             if (res.status == 200) {
+                setSuccess("Custom field berhasil dibuat.")
                 setOptions([])
                 router.refresh()
             }
         } catch (error) {
+            setError("Terjadi Kesalahan!")
             console.log(error)
         } finally {
             setLoading(false)
@@ -73,14 +81,19 @@ export const CustomOptionField = () => {
     }
 
     const onDelete = async (id: any) => {
+
+        setError("")
+        setSuccess("")
         try {
             setLoading(true)
             const res = await axios.delete(`/api/custom-field/${id}`)
             if (res) {
+                setSuccess("Custom field berhasil dihapus.")
                 router.refresh()
             }
 
         } catch (error) {
+            setError("Terjadi kesalahan!")
             console.error(error)
         } finally {
             setLoading(false)
@@ -111,6 +124,8 @@ export const CustomOptionField = () => {
             description="Membuat option field baru sesuai kebutuhan yang akan ditambahkan pada logsheet."
             footer={false}
         >
+            <AlertSuccess message={success} />
+            <AlertError message={error} />
             <Form {...form}>
 
                 <form className="flex flex-col space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>

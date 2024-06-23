@@ -9,19 +9,19 @@ export async function POST(req: Request){
 
         const {
             name,
-            symbol
+            kolom
         } =  body
-       
+        
 
-        const unit = await prisma.unit.create({
+        const logsheet = await prisma.logsheet.create({
             data: {
                 name,
-                symbol
+                kolom
             }
         })
-        return NextResponse.json(unit)
+        return NextResponse.json(logsheet)
     }catch(error){
-        console.log("UNIT_POST", error)
+        console.log("LOGSHEET POST ERROR:", error)
         return new NextResponse("Internal Server Error", {status: 500})
     }
 }
